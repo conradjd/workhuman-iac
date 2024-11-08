@@ -48,8 +48,8 @@ Ensure you have the following tools installed on your local machine:
 1. Clone this repository:
 
    ```bash
-   git clone <repo_url>
-   cd <repo_name>
+   git clone [<repo_url>](https://github.com/conradjd/workhuman-iac)
+   cd workhuman-iac
 
 2. Set up AWS credentials for Terraform and AWS CLI. If you haven't already, follow the guide on Configuring AWS CLI.
 
