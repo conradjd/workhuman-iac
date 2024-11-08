@@ -1,0 +1,92 @@
+---
+- hosts: web  # Target the web server hosts defined in the Ansible inventory
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+
+    - name: Enable nginx for amazon linux 2
+      shell: "amazon-linux-extras enable nginx1.12"
+      become: yes
+
+    - name: Install nginx
+      yum:
+        name: nginx
+        state: present
+
+    - name: Install php
+      yum:
+        name: '{{ item }}'
+        state: latest
+      with_items:
+        - php
+        - php-common
+        - php-cli
+        - php-gd
+        - php-curl
+        - php-mysql
+        - php-fpm
+    
+    - name: Copy php config files
+      copy:
+        src: "../files/php.conf"
+        dest: "/etc/php-fpm.d/www.conf"
+        mode: 0644
+
+    - name: Set the right permissions to php directories
+      file:
+        path: /var/lib/php
+        owner: root
+        group: nginx
+
+    - name: Enable php-fpm
+      service: 
+        name: php-fpm 
+        enabled: yes
+        state: started
+
+    - name: Copy nginx config files
+      copy:
+        src: "../files/nginx.conf"
+        dest: "/etc/nginx/nginx.conf"
+        mode: 0644
+
+    - name: Creates directory for application
+      file: 
+        path: "/var/www/app"
+        state: directory
+
+    - name: Make the build package
+      local_action: shell tar -c -z -f app.zip -C ../files/php .
+      become: no
+
+    - name: Copy build package
+      copy:
+        src: "app.zip"
+        dest: "/home/ec2-user/app.zip"
+
+    - name: Unpack build package
+      shell: "tar -xf /home/ec2-user/app.zip -C /var/www/app"
+
+    - name: Set the right permissions to app directories
+      file:
+        path: /var/www/app
+        owner: root
+        group: nginx
+
+    - name: Update application nginx config
+      copy: 
+        src: "../files/application.conf"
+        dest: "/etc/nginx/conf.d/app.conf"
+        mode: 0644
+
+    - name: Enable Nginx
+      service: 
+        name: nginx 
+        enabled: yes 
+        state: started
+
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted

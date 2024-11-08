@@ -1,0 +1,20 @@
+all:
+  children:
+    web:
+      hosts:
+        webserver1:
+          ansible_host: 44.195.36.85
+          ansible_ssh_private_key_file: /Users/conraddcosta/Codebase/PythonAlgos/my-aws-key.pem
+          ansible_user: ec2-user
+
+        webserver2:
+          ansible_host: 3.91.174.137
+          ansible_ssh_private_key_file: /Users/conraddcosta/Codebase/PythonAlgos/my-aws-key.pem
+          ansible_user: ec2-user
+
+    db:
+      hosts:
+        dbserver:
+          ansible_host: 3.87.215.65
+          ansible_ssh_private_key_file: /Users/conraddcosta/Codebase/PythonAlgos/my-aws-key.pem
+          ansible_user: ec2-user

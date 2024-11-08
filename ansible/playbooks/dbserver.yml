@@ -1,0 +1,42 @@
+---
+- hosts: db  # Target the DB server hosts defined in the Ansible inventory
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+    - name: Enable mariadb for amazon linux 2
+      shell: "amazon-linux-extras enable mariadb10.5"
+      become: yes
+
+    - name: Install mariadb
+      yum:
+        name: mariadb
+        state: latest
+
+    - name: Start mariadb service
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: Recreate database and user
+      shell: |
+        mariadb <<EOF
+        DROP USER IF EXISTS user_manager;
+        DROP DATABASE IF EXISTS user_inventory;
+        CREATE DATABASE user_inventory;
+        CREATE USER user_manager IDENTIFIED BY 'Qwerty123';
+        GRANT ALL PRIVILEGES ON user_inventory.* TO user_manager;
+        FLUSH PRIVILEGES;
+        EOF
+      become: yes
+
+    - name: Copy DB DDL file
+      copy:
+        src: "../files/user_management.sql"
+        dest: "/home/ec2-user/user_management.sql"
+        mode: 0644
+
+    - name: Build database tables
+      shell: "mariadb user_inventory < /home/ec2-user/user_management.sql"
+      become: yes
