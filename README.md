@@ -1,6 +1,7 @@
 # Web Application Infrastructure Deployment
 
 This repository contains the infrastructure code to deploy a web application stack using AWS services like EC2, Load Balancer, and Auto Scaling Group. This application can be accessed by hitting the DNS of the load balancer:
+
 [http://app-load-balancer-490116055.us-east-1.elb.amazonaws.com](http://app-load-balancer-490116055.us-east-1.elb.amazonaws.com)
 
 ## Overview
