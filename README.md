@@ -1,6 +1,6 @@
 # Web Application Infrastructure Deployment
 
-This repository contains the infrastructure code to deploy a web application stack using AWS services like EC2, Load Balancer, and Auto Scaling Group. This application is accessible via two public IPs: `44.195.36.85` or `3.91.174.137`, depending on which server you want to interact with.
+This repository contains the infrastructure code to deploy a web application stack using AWS services like EC2, Load Balancer, and Auto Scaling Group. This application can be accessed by hitting the DNS of the load balancer: [http://app-load-balancer-490116055.us-east-1.elb.amazonaws.com](http://app-load-balancer-490116055.us-east-1.elb.amazonaws.com)
 
 ## Overview
 
@@ -21,7 +21,9 @@ The project deploys the following infrastructure components:
 
 ## Accessing the Application
 
-You can access the application hosted on the web servers via the following IPs:
+You can access the application by hitting the DNS of the load balancer at [http://app-load-balancer-490116055.us-east-1.elb.amazonaws.com](http://app-load-balancer-490116055.us-east-1.elb.amazonaws.com)
+
+Alternatively, you can also access the application hosted on the web servers via the following IPs:
 
 - **Web Server 1**: `44.195.36.85`
 - **Web Server 2**: `3.91.174.137`
